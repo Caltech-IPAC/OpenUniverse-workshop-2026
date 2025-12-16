@@ -44,7 +44,3 @@ When creating a new notebook, please start with the IRSA notebooks template and 
 ## Contact
 
 Contact [IRSA Help Desk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions.
-
-```python
-
-```
