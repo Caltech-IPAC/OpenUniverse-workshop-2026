@@ -1,0 +1,3 @@
+[submodule "tutorials/fsps"]
+	path = tutorials/fsps
+	url = https://github.com/cconroy20/fsps.git
