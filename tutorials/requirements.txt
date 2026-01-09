@@ -1,0 +1,14 @@
+numpy
+scipy
+s3fs
+pyarrow
+matplotlib
+pandas
+h5py
+seaborn
+gdown
+astropy
+photutils
+sedpy
+prospect
+fsps
