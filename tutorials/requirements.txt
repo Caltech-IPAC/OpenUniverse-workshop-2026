@@ -1,0 +1,16 @@
+numpy
+scipy
+s3fs
+pyarrow
+matplotlib
+pandas
+h5py
+seaborn
+gdown
+astropy
+photutils
+astro-sedpy
+astro-prospector
+fsps
+# not directly imported, but used as a sampler by prospector
+dynesty
