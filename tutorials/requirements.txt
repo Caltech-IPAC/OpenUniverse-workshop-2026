@@ -9,6 +9,8 @@ seaborn
 gdown
 astropy
 photutils
-sedpy
-prospect
+astro-sedpy
+astro-prospector
 fsps
+# not directly imported, but used as a sampler by prospector
+dynesty
