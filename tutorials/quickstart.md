@@ -368,9 +368,9 @@ You now have S3 URIs for all Roman and Rubin images covering your target positio
 
 ## About this notebook
 
-**Authors:** Jessica Krick, Jaladh Singhal, Brigitta Sipőcz, Troy Raen
+**Authors:** Jessica Krick, Jaladh Singhal, Brigitta Sipőcz
 
-**Updated:** 2026-04-16
+**Updated:** 2026-04-17
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.

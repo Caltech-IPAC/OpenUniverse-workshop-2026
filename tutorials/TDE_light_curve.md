@@ -857,8 +857,7 @@ detection and photometry of astronomical sources (Bradley et al.
 
 ## About this notebook
 
-**Authors:** IRSA Data Science Team, including Jessica Krick, Jaladh Singhal, Troy Raen, Brigitta Sipőcz,
-Andreas Faisst, Vandana Desai
+**Authors:** Jessica Krick, Jaladh Singhal, Brigitta Sipőcz
 
 **Updated:** 2026-04-02
 
