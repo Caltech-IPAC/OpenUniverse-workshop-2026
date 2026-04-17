@@ -26,9 +26,9 @@ By the end of this tutorial, you will be able to:
 
 The [OpenUniverse2024](https://arxiv.org/abs/2501.05632) simulation suite delivers ~70 deg² of matched optical/infrared imagery for both the LSST Wide-Fast-Deep (WFD) and the Nancy Grace Roman Space Telescope high-latitude survey, producing roughly 400 TB of publicly available synthetic imaging and catalogs. All data are stored in the cloud (AWS S3) and can be accessed anonymously without any credentials.
 
-This tutorial is a focused introduction to data access only. It covers the three main types of data products:
+This tutorial is a focused introduction to data access only. It covers the three main categories:
 
-1. **FITS images** — Roman and Rubin simulated science images stored in S3
+1. **Directory structure for FITS images** — Roman and Rubin simulated science images stored in S3
 2. **Parquet catalogs** — transient (SNANA), galaxy, and galaxy-flux tables, indexed by HEALPix sky region
 3. **Image search via SIA** — querying which images cover a given sky position using astroquery and the IRSA Simple Image Access service
 
@@ -56,7 +56,6 @@ This notebook is designed to be run sequentially from top to bottom. All code is
 ```
 
 ```{code-cell} ipython3
-from astropy.io import fits
 import numpy as np
 import s3fs
 from matplotlib import pyplot as plt
@@ -65,13 +64,16 @@ import pyarrow.parquet as pq
 import hpgeom
 import json
 from astroquery.ipac.irsa import Irsa
+from astropy.coordinates import SkyCoord
+from astropy import units as u
+from astropy.io import fits
 ```
 
-## 1. Explore the OpenUniverse2024 Data Directories on S3
+## 1. Explore Directory Structure for FITS images
 
-The OpenUniverse2024 data live in a public AWS S3 bucket and can be accessed anonymously using `s3fs`. This section shows how to establish that connection, navigate the directory tree, and inspect the contents of a FITS image file.
+The OpenUniverse2024 data live on the cloud in a public AWS S3 bucket and can be accessed anonymously using `s3fs`. This section shows how to establish that connection, navigate the directory tree, and inspect the contents of a FITS image file.
 
-In the path below, `simple_model` refers to the simulated images with noise and realistic instrument effects, as opposed to `truth` images which are noise-free. The `full` simulation covers the complete survey footprint; a smaller `preview` subset is also available. See the [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) for details on the differences.
+In the path below, `simple_model` refers to the simulated images with noise and realistic instrument effects, as opposed to `truth` images which are noise-free. The `full` simulation covers the complete survey footprint; a smaller `preview` subset is also available. See the [OpenUniverse2024 paper](https://arxiv.org/abs/2501.05632) for details on the differences. A `pointing` is a unique Roman observation visit — each pointing corresponds to one placement of the 18-detector focal plane on the sky, producing up to 18 individual FITS files (one per detector).
 
 ```{code-cell} ipython3
 # Create an anonymous (public read-only) connection to the NASA IRSA S3 bucket.
@@ -81,23 +83,33 @@ s3 = s3fs.S3FileSystem(anon=True)
 BUCKET_NAME = "nasa-irsa-simulations"
 OU_PREFIX = "openuniverse2024"
 ROMAN_TDS_PREFIX = "roman/full/RomanTDS/images/simple_model"
-CATALOG_NAME = "roman_rubin_cats_v1.1.2_faint"
 
-# Pick one band and pointing to explore
+# Pick one band to explore
 BAND = "J129"
+band_directory = f"{BUCKET_NAME}/{OU_PREFIX}/{ROMAN_TDS_PREFIX}/{BAND}"
+```
+
+The pointings available for a given band can be listed by calling `s3.ls` on the band directory.
+
+```{code-cell} ipython3
+# List all pointings available for the chosen band
+all_pointings = [p.split("/")[-1] for p in s3.ls(band_directory)]
+print(f"Found {len(all_pointings)} pointings in band {BAND}:")
+print(all_pointings[:10], "...")
+```
+
+We pick one of these pointings to explore further.
+
+```{code-cell} ipython3
+# Select one pointing and list the files it contains
 POINTING = "10190"
+image_directory = f"{band_directory}/{POINTING}"
 
-image_directory = f"{BUCKET_NAME}/{OU_PREFIX}/{ROMAN_TDS_PREFIX}/{BAND}/{POINTING}"
-
-# List files in this directory
-s3.ls(image_directory)
+files = [f"s3://{f}" for f in s3.ls(image_directory)]
+print(f"Found {len(files)} files in pointing {POINTING}")
 ```
 
 ```{code-cell} ipython3
-# How many files are in this directory?
-files = [f"s3://{f}" for f in s3.ls(image_directory)]
-print(f"Found {len(files)} files")
-
 # Open one FITS file and inspect its extensions
 fname = files[0]
 with fits.open(fname, use_fsspec=True, fsspec_kwargs={"anon": True}, memmap=False) as hdul:
@@ -106,11 +118,12 @@ with fits.open(fname, use_fsspec=True, fsspec_kwargs={"anon": True}, memmap=Fals
     hdul.info()
 ```
 
-Each Roman TDS FITS file contains four extensions: a primary header with no data, followed by three 4088×4088 pixel planes — `SCI` (science image), `ERR` (per-pixel uncertainty), and `DQ` (data quality mask).
+Each Roman TDS FITS file contains four extensions: a `primary` header with no data, followed by three 4088×4088 pixel planes — `SCI` (science image), `ERR` (per-pixel uncertainty), and `DQ` (data quality mask).
 
 +++
 
-Let's display a gallery of example images to get a sense of the data.
+Let's display a gallery of example images to get a sense of the data. 
+Note this gallery can take about a minute to build.
 
 ```{code-cell} ipython3
 ---
@@ -151,19 +164,19 @@ def show_gallery(files, max_images=9):
 ```
 
 ```{code-cell} ipython3
-# Display up to 6 images from the selected directory.
-show_gallery(files, max_images=6)
+# Display up to 3 images from the selected directory.
+show_gallery(files, max_images=3)
 ```
 
 ## 2. Access the Parquet Catalogs
 
-The OpenUniverse2024 catalogs are stored as Parquet files, partitioned by HEALPix sky region (nside=32, RING ordering). Each region has three file types:
+The OpenUniverse2024 catalogs are stored as [Apache Parquet](https://parquet.apache.org/) files, partitioned by [HEALPix](https://healpix.sourceforge.io/) sky region (nside=32, RING ordering). Each region has three file types:
 
 1. `snana_{region}.parquet` — one row per simulated transient event (supernovae, TDEs, etc.), with event type (`model_name`) and host galaxy ID (`host_id`)
 2. `galaxy_{region}.parquet` — host galaxy positions and physical properties
 3. `galaxy_flux_{region}.parquet` — multi-band Roman and Rubin photometry for each galaxy
 
-The `region` number in each filename is the HEALPix pixel index. We can convert sky coordinates to a region index using `hpgeom`.
+We first look for the correct catalog for the center of the Roman Time-Domain Survey(TDS).  The `region` number in each filename is the HEALPix pixel index. Because we know that the catalogs were built with nside=32 and RING ordering, we can convert sky coordinates to a region index using [`hpgeom`](https://hpgeom.readthedocs.io/en/latest/).
 
 ```{code-cell} ipython3
 # The Roman Time-Domain Survey is centered near the LSST ELAIS-S1 Deep Drilling Field.
@@ -178,6 +191,7 @@ print(f"HEALPix region for RA={ra}, Dec={dec}: {region}")
 
 ```{code-cell} ipython3
 # Build the S3 paths for this region's catalog files
+CATALOG_NAME = "roman_rubin_cats_v1.1.2_faint"
 catalog_prefix = f"{BUCKET_NAME}/{OU_PREFIX}/roman/full/{CATALOG_NAME}"
 
 snana_path    = f"{catalog_prefix}/snana_{region}.parquet"
@@ -191,76 +205,75 @@ print("Galaxy flux file: ", gal_flux_path)
 
 ### 2.1 Inspect the SNANA Transient Catalog
 
+`inspect_parquet_columns()` reads only the Parquet metadata footer to print the row count and column names — no data is loaded into memory.
+We use it here for the SNANA catalog and repeat it for the galaxy info and flux catalogs below.
+
 ```{code-cell} ipython3
----
-jupyter:
-  source_hidden: true
----
-def inspect_parquet_columns(s3_path, max_rows=0):
+def inspect_parquet_files(s3_path):
     """
-    Read a Parquet file from S3 and print its structure.
+    Print the structure of a Parquet file on S3 without reading its data.
+
+    Reads only the Parquet metadata footer (row count, column names and types),
+    which is fast regardless of file size.
 
     Parameters
     ----------
     s3_path : str
         S3 path to the Parquet file (without the s3:// prefix).
-    max_rows : int, optional
-        If > 0, also print the first `max_rows` rows. Default is 0.
-
-    Returns
-    -------
-    pandas.DataFrame
-        The full DataFrame loaded from the file.
     """
     fs = pyarrow.fs.S3FileSystem(anonymous=True)
-    df = pq.read_table(s3_path, filesystem=fs).to_pandas()
+    meta = pq.read_metadata(s3_path, filesystem=fs)
+    schema = pq.read_schema(s3_path, filesystem=fs)
 
-    print(f"Shape: {df.shape[0]} rows × {df.shape[1]} columns")
+    print(f"Rows: {meta.num_rows}  |  Columns: {len(schema.names)}")
     print("\nColumn names:")
-    for c in df.columns:
-        print("  ", c)
-
-    if max_rows > 0:
-        print(f"\nFirst {max_rows} rows:")
-        print(df.head(max_rows))
-
-    return df
+    for name in schema.names:
+        print("  ", name)
 ```
 
 ```{code-cell} ipython3
-df_snana = inspect_parquet_columns(snana_path)
+inspect_parquet_files(snana_path)
 ```
 
 ```{code-cell} ipython3
-# What transient model types are included in this region?
-df_snana["model_name"].unique()
+# Read just the model_name column to see what transient types are in this region
+fs = pyarrow.fs.S3FileSystem(anonymous=True)
+model_names = pq.read_table(snana_path, filesystem=fs, columns=["model_name"]).to_pandas()
+model_names["model_name"].unique()
 ```
 
 ### 2.2 Inspect the Galaxy Info Catalog
 
 ```{code-cell} ipython3
-df_galaxy = inspect_parquet_columns(galaxy_path)
+inspect_parquet_files(galaxy_path)
 ```
 
 ### 2.3 Inspect the Galaxy Flux Catalog
 
 ```{code-cell} ipython3
-df_galaxy_flux = inspect_parquet_columns(gal_flux_path)
+inspect_parquet_files(gal_flux_path)
 ```
 
 ### 2.4 Join Transient Events to Their Host Galaxies
 
-A common operation is to take a transient from the SNANA file and retrieve its host galaxy's sky position from the galaxy info file, using the `host_id` / `galaxy_id` key.
+A common operation is to take a transient from the SNANA file and look up its host galaxy's sky position from the galaxy info file.
+The two files share a common key: `host_id` in the SNANA file corresponds to `galaxy_id` in the galaxy info file.
+We read the full SNANA catalog here, then use a filter to fetch only the matching row from the galaxy file without loading the entire galaxy catalog.
+
+Note: The next cell takes ~45s to run
 
 ```{code-cell} ipython3
 fs = pyarrow.fs.S3FileSystem(anonymous=True)
+
+# Read the full SNANA catalog for this region
+df_snana = pq.read_table(snana_path, filesystem=fs).to_pandas()
 
 # Pick one transient — here we grab the first row as an example
 example_transient = df_snana.iloc[0]
 print("Example transient:")
 print(example_transient[["model_name", "host_id", "start_mjd", "end_mjd"]])
 
-# Look up its host galaxy
+# Look up its host galaxy by matching host_id (SNANA) to galaxy_id (galaxy info file)
 host = pq.read_table(
     galaxy_path,
     filesystem=fs,
@@ -268,17 +281,15 @@ host = pq.read_table(
 ).to_pandas()
 
 print("\nHost galaxy info:")
-print(host)
+host
 ```
 
-## 3. Query Images by Sky Position Using SIA
+## 3. Image Search
 
 Given a sky position (e.g., the host galaxy coordinates from Section 2), we can search for all Roman or Rubin images that cover that position using the IRSA Simple Image Access (SIA) service via `astroquery`.
+First we set up the connection to the SIA service and list the available catalogs, then we query by position to get a table of matching images, and finally we extract the cloud locations (S3 URIs) so the files can be opened directly.
 
 ```{code-cell} ipython3
-from astropy.coordinates import SkyCoord
-from astropy import units as u
-
 # Point the astroquery IRSA client to the simulated VO endpoints.
 # Must be connected to the IPAC VPN or local network to access these endpoints.
 # TODO: replace irsadev with irsa when the simulated SIA is deployed to production.
@@ -314,13 +325,14 @@ host_ra  = float(host.iloc[0]["ra"])
 host_dec = float(host.iloc[0]["dec"])
 search_radius = 1 * u.arcsec  # small radius: we just need images that contain this point
 
+#convert ra, dec to SkyCoords for ease of use
 coords = SkyCoord(host_ra, host_dec, unit='deg')
 
 # Query Roman TDS images in the J129 band
 sia_results = Irsa.query_sia(pos=(coords, search_radius.to(u.deg)),
                              collection=OU_ROMAN_SIA_COLLECTION)
 
-# Keep only J129 simple_model images and attach the S3 URI
+# We first choose to look at the J129 band and the simple_model images
 bandname = "J129"
 roman_images = sia_results[
     ['TDS_simple_model' in r['obs_id'] and bandname in r['energy_bandpassname']
@@ -356,16 +368,14 @@ You now have S3 URIs for all Roman and Rubin images covering your target positio
 
 ## About this notebook
 
-**Authors:** IRSA Data Science Team, including Jessica Krick, Jaladh Singhal, Troy Raen, Brigitta Sipőcz,
-Andreas Faisst, Vandana Desai
+**Authors:** Jessica Krick, Jaladh Singhal, Brigitta Sipőcz, Troy Raen
 
 **Updated:** 2026-04-16
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.
 
-**Runtime:** As of the date above, this notebook takes about 60s to run to completion on
-a machine with 8GB RAM and 4 CPU.
+**Runtime:** As of the date above, this notebook takes about 2 minutes to run to completion on a machine with 8GB RAM and 4 CPU.
 
 **AI Acknowledgement:**
 
@@ -380,3 +390,7 @@ This tutorial was developed with the assistance of AI tools
 - [Astropy Collaboration et al., 2022](https://arxiv.org/abs/2206.14220)
 
 - [OpenUniverse et al., 2025](https://arxiv.org/abs/2501.05632)
+
+```{code-cell} ipython3
+
+```
