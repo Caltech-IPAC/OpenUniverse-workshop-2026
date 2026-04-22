@@ -126,10 +126,6 @@ Let's display a gallery of example images to get a sense of the data.
 Note this gallery can take about a minute to build.
 
 ```{code-cell} ipython3
----
-jupyter:
-  source_hidden: true
----
 def show_gallery(files, max_images=9):
     """
     Display a gallery of FITS images.
@@ -307,10 +303,6 @@ OU_RUBIN_SIA_COLLECTION = 'simulated_rubin_openuniverse2024'
 ```
 
 ```{code-cell} ipython3
----
-jupyter:
-  source_hidden: true
----
 def get_s3_fpath(cloud_access):
     """Extract the S3 URI from the cloud_access JSON string in an SIA result."""
     cloud_info = json.loads(cloud_access)
@@ -346,6 +338,8 @@ roman_images['obs_id', 't_min', 't_max', 's3_uri']
 
 ```{code-cell} ipython3
 # The same search works for Rubin images — just swap the collection name and band filter.
+# Unlike the Roman collection, the Rubin collection contains only one image type (calexp),
+# so no obs_id filter is needed beyond selecting the desired band.
 rubin_band = "r"
 rubin_results = Irsa.query_sia(pos=(coords, search_radius.to(u.deg)),
                                collection=OU_RUBIN_SIA_COLLECTION)
@@ -370,7 +364,7 @@ You now have S3 URIs for all Roman and Rubin images covering your target positio
 
 **Authors:** Jessica Krick, Jaladh Singhal, Brigitta Sipőcz
 
-**Updated:** 2026-04-17
+**Updated:** 2026-04-22
 
 **Contact:** [IRSA Helpdesk](https://irsa.ipac.caltech.edu/docs/help_desk.html) with questions
 or problems.
@@ -390,7 +384,3 @@ This tutorial was developed with the assistance of AI tools
 - [Astropy Collaboration et al., 2022](https://arxiv.org/abs/2206.14220)
 
 - [OpenUniverse et al., 2025](https://arxiv.org/abs/2501.05632)
-
-```{code-cell} ipython3
-
-```
