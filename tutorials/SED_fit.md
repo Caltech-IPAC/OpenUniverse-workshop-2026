@@ -1750,8 +1750,7 @@ Distribution of Prospector-derived host galaxy stellar masses for Type Ia and Co
 
 ## About this notebook
 
-**Authors:** IRSA Data Science Team, including Jessica Krick, Troy Raen, Brigitta Sipőcz,
-Andreas Faisst, Vandana Desai, Jaladh Singhal
+**Authors:** Jessica Krick, Jaladh Singhal, Brigitta Sipőcz
 
 **Updated:** 2026-02-12
 
