@@ -6,9 +6,16 @@ The OpenUniverse2024 dataset is a suite of large-scale cosmological simulations 
 
 This repository contains three main tutorial notebooks using the OpenUniverse2024 dataset — from data access and visualization to photometric analysis and spectral energy distribution (SED) fitting.
 
-### 1. Quickstart Tutorial (coming soon)
+### 1. Quickstart Tutorial — Accessing OpenUniverse2024 Data
 
-The Quickstart notebook will provide a lightweight introduction to the OpenUniverse2024 dataset and its data structure. It will guide users through connecting to the public S3 bucket, exploring catalog files, and visualizing a subset of the simulated images.
+The Quickstart tutorial is a focused introduction to the three main data access patterns in OpenUniverse2024: browsing the S3 directory structure for Roman and Rubin FITS images, reading the parquet catalogs (transient, galaxy, and galaxy-flux tables), and querying which images cover a given sky position using the IRSA Simple Image Access (SIA) service.
+
+#### Goals:
+
+- Connect to the public S3 bucket and navigate the Roman image directory tree
+- Inspect the structure of a Roman FITS file and display a gallery of images
+- Load SNANA, galaxy, and galaxy-flux parquet catalogs using HEALPix region indexing
+- Query Roman and Rubin images overlapping a sky position via astroquery and SIA
 
 ### 2. SED_fit Tutorial — Fitting Galaxy SEDs with Prospector
 
@@ -22,17 +29,17 @@ The SED_fit tutorial demonstrates how to build a full science workflow: starting
 - Compare host galaxy properties across supernova types
 - Visualize results as SED plots and histograms of fitted stellar masses
 
-### 3. GW_host Tutorial — Identifying Gravitational-Wave Host Galaxies
+### 3. TDE Light Curve Tutorial — Building a Multi-Epoch Light Curve
 
-The GW_host tutorial explores how to identify candidate host galaxies for gravitational-wave events within the OpenUniverse2024 simulations. It introduces an end-to-end workflow that includes accessing sky-localization maps, performing cone searches in simulated catalogs, retrieving corresponding images, and performing photometric measurements.
+The TDE Light Curve tutorial demonstrates an end-to-end science workflow for transient astronomy: locating a simulated Tidal Disruption Event (TDE) in the OpenUniverse2024 transient catalog, identifying its host galaxy, retrieving Roman images via the IRSA SIA service, and performing aperture photometry to construct a multi-epoch light curve.
 
 #### Goals:
 
-- Parse gravitational-wave alert information
-- Perform cone searches within OpenUniverse2024 Roman/Rubin catalogs
-- Retrieve and inspect overlapping simulated images from S3
-- Perform aperture photometry and build light curves for host candidates
-- Visualize cutouts and light curves to identify potential GW hosts
+- Select a TDE from the SNANA parquet catalog and locate its host galaxy
+- Query Roman TDS images covering the host position using astroquery and SIA
+- Perform aperture photometry on individual Roman images
+- Build and visualize a multi-epoch infrared light curve
+- Display full images and cutouts centered on the TDE host
 
 ## Citation
 
