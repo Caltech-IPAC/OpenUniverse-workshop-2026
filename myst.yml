@@ -19,8 +19,7 @@ project:
          - https://irsa.ipac.caltech.edu/cgi-bin/Gator/nph-scan?projshort=COSMOS
          - https://irsa.ipac.caltech.edu/cgi-bin/Gator/nph-dd?catalog=irs_enhv211
   toc:
-    - file: tutorials/GW_host.md
-    - file: tutorials/SED_fit.md
+    - file: README.md
 
 site:
   template: book-theme
