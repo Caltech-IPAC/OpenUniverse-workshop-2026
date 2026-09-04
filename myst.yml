@@ -1,0 +1,26 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  subject: OpenUniverse2024 Workshop
+  description: Material for the OpenUniverse2024 workshop held 15 September 2026
+  keywords: [astronomy]
+  authors: [Caltech/IPAC-IRSA Data Science Team]
+  github: https://github.com/Caltech-IPAC/OpenUniverse-workshop-2026
+  references:
+    fornax-docs: https://docs.fornax.sciencecloud.nasa.gov
+    irsa-tutorials: https://caltech-ipac.github.io/irsa-tutorials
+  error_rules:
+     - rule: link-resolves
+       severity: ignore
+       keys:
+         # These link resolve in the browser but generates did not resolve and 403 for the build
+         - https://irsa.ipac.caltech.edu/cgi-bin/Gator/nph-scan?projshort=COSMOS
+         - https://irsa.ipac.caltech.edu/cgi-bin/Gator/nph-dd?catalog=irs_enhv211
+  toc:
+    - file: landing-page.md
+
+site:
+  template: book-theme
+  options:
+    favicon: _static/irsa-favicon.ico
+    logo: _static/irsa_logo.png
