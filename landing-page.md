@@ -10,7 +10,7 @@ For Rubin there are raw pixel data, calibrated exposures, coadds, and photometri
 All data is public, hosted on Amazon S3 in `s3://nasa-irsa-simulations/openuniverse2024/`, and requires no credentials. Catalogs are stored in Parquet format.  Images are multi-extension FITS.
 
 
-The below materials are intended as a free workshop with a hands-on introduction to working with the OU dataset.
+The below materials are intended as a free workshop with a hands-on introduction to working with the OpenUniverse2024 dataset.
 Rather than surveying the simulations from a distance, we work through Python Jupyter notebooks that access the data directly in the cloud and carry it through to a scientific result — locating a transient, building a light curve, fitting a spectral energy distribution.
 The emphasis throughout is on combining complementary survey data: what you can measure by using Roman and Rubin together that you cannot get from either one alone, and how to structure that work as a scalable cloud workflow rather than a local download.
 
