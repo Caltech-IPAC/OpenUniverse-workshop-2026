@@ -29,9 +29,9 @@ The tutorials assume some familiarity with Python and Jupyter notebooks, but not
 
 ## Agenda
 
-Slides and recordings will be posted here after the workshop.
+Slides are linked below as they become available; recordings will be posted here after the workshop.
 
-- **What Is OpenUniverse2024?** (15 min)
+- **What Is OpenUniverse2024?** (15 min) — [slides (PDF)](workshop-slides/what-is-openuniverse2024.pdf)
 - **Introduction to Fornax** (15 min)
 - **Accessing OpenUniverse2024 Data** (20 min)
 - **Visualizing OpenUniverse2024 Data** (15 min)
