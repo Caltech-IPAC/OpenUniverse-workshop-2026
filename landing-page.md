@@ -81,7 +81,7 @@ Use Firefly to explore the structure of the simulations and visualize their cont
 - Access cloud-hosted Roman and Rubin simulated images and find those covering a sky position with SIA
 - Launch an interactive Firefly instance inside JupyterLab
 - Display a Rubin image and overplot ds9 regions showing where the Roman data fall
-- Overplot Parquet truth catalogs and filter them to pick out high-redshift galaxies
+- Overplot Parquet truth catalogs and filter them to pick out galaxies of interest
 - Build three-color images and control stretch, pan, and zoom from Python
 
 ### [Roman Time Domain Survey Supernova](https://caltech-ipac.github.io/irsa-tutorials/openuniverse2024-roman-tds-supernova)
