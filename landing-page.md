@@ -46,6 +46,14 @@ Recordings will be posted here after the workshop.
   - Tutorial questions
   - Fornax technical issues
 
+## Before You Start
+
+The workshop runs entirely in the [Fornax Science Console](https://docs.fornax.sciencecloud.nasa.gov/), NASA's cloud-based science platform, so there is nothing to install on your own machine.
+The [Fornax Quick Start Guide](https://docs.fornax.sciencecloud.nasa.gov/quick-start/) walks through the five steps of getting an account, logging in, starting a server session, opening a notebook, and shutting the server down again.
+
+- **Registered workshop participants** already have a Fornax account and can skip step 1 and start at step 2, "Log In".
+- **Everyone else** should begin at step 1, "Get an Account", and register at [signup.fornax.sciencecloud.nasa.gov](https://signup.fornax.sciencecloud.nasa.gov). Requests made with a `nasa.gov` address are approved immediately; other institutional addresses are reviewed by Fornax staff and can take up to two business days, so allow time before you plan to work through the material.
+
 ## Tutorials
 
 Workshop participants will explore the following tutorials, all part of the [IRSA's Simulated Data Tutorials](https://caltech-ipac.github.io/irsa-tutorials/simulated/).
