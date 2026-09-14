@@ -9,7 +9,7 @@ For Roman there are truth catalogs of the input object properties, noiseless tru
 For Rubin there are raw pixel data, calibrated exposures, coadds, and photometric catalogs.
 
 All data are public, hosted on AWS in the S3 bucket `s3://nasa-irsa-simulations/openuniverse2024/` (`us-east-1` region), and require no credentials.
-Catalogs are stored in Parquet format.
+Catalogs are stored in Parquet, hdf5, and fits format.
 Images are multi-extension FITS.
 
 - **Documentation:** [OpenUniverse2024 Overview at IRSA](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html)
