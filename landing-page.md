@@ -1,35 +1,31 @@
 # Hands-On Science with OpenUniverse2024 Roman and Rubin Simulations
 
+## OpenUniverse2024 Introduction
+
 [OpenUniverse2024](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html) is a collection of large-scale simulated observations designed to resemble the expected data products of the Nancy Grace Roman Space Telescope and the Vera C. Rubin Observatory.
 Both observatories are simulated over the same roughly 70 square degree patch of sky, so the same objects appear in Roman's high-resolution near-infrared imaging and in Rubin's wide optical *ugrizy* imaging, and the two can be analyzed together.
 The dataset includes wide-area imaging, a time-domain survey that revisits a smaller footprint many times, and mock source catalogs.
 For Roman there are truth catalogs of the input object properties, noiseless truth images, calibrated single-epoch images, and coadds.
 For Rubin there are raw pixel data, calibrated exposures, coadds, and photometric catalogs.
 
+All data are public, hosted on AWS in the S3 bucket `s3://nasa-irsa-simulations/openuniverse2024/` (`us-east-1` region), and require no credentials.
+Catalogs are stored in Parquet format.
+Images are multi-extension FITS.
 
-All data is public, hosted on Amazon S3 in `s3://nasa-irsa-simulations/openuniverse2024/`, and requires no credentials. Catalogs are stored in Parquet format.  Images are multi-extension FITS.
+- **Documentation:** [OpenUniverse2024 Overview at IRSA](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html)
+- **Data:** [OpenUniverse2024 Cloud Data Access](https://irsa.ipac.caltech.edu/cloud_access/#openuniverse)
 
+If you use the OpenUniverse2024 dataset in your work, please follow the "How to Cite" instructions on the [Registry of Open Data on AWS: OpenUniverse2024](https://registry.opendata.aws/openuniverse2024/) page.
+
+## Workshop Resources
 
 The below materials are intended as a free workshop with a hands-on introduction to working with the OpenUniverse2024 dataset.
 Rather than surveying the simulations from a distance, we work through Python Jupyter notebooks that access the data directly in the cloud and carry it through to a scientific result — locating a transient, building a light curve, fitting a spectral energy distribution.
 The emphasis throughout is on combining complementary survey data: what you can measure by using Roman and Rubin together that you cannot get from either one alone, and how to structure that work as a scalable cloud workflow rather than a local download.
 
-
 All of the material runs in the Fornax Science Console, so participants can follow along and keep experimenting afterward with no local setup.
 
-## Before You Start
-
-The workshop runs entirely in the [Fornax Science Console](https://docs.fornax.sciencecloud.nasa.gov/), NASA's cloud-based science platform, so there is nothing to install on your own machine.
-The [Fornax Quick Start Guide](https://docs.fornax.sciencecloud.nasa.gov/quick-start/) walks through the five steps of getting an account, logging in, starting a server session, opening a notebook, and shutting the server down again.
-
-- **Registered workshop participants** already have a Fornax account and can skip step 1 and start at step 2, "Log In".
-- **Everyone else** should begin at step 1, "Get an Account", and register at [signup.fornax.sciencecloud.nasa.gov](https://signup.fornax.sciencecloud.nasa.gov). Requests made with a `nasa.gov` address are approved immediately; other institutional addresses are reviewed by Fornax staff and can take up to two business days, so allow time before you plan to work through the material.
-
-The tutorials assume some familiarity with Python and Jupyter notebooks, but not with Roman, Rubin, or cloud data access.
-
-## Agenda
-
-Slides are linked below as they become available; recordings will be posted here after the workshop.
+### Agenda
 
 - **What Is OpenUniverse2024?** (15 min) — [slides (PDF)](workshop-slides/what-is-openuniverse2024.pdf)
 - **Introduction to Fornax** (15 min)
@@ -37,9 +33,29 @@ Slides are linked below as they become available; recordings will be posted here
 - **Visualizing OpenUniverse2024 Data** (15 min)
 - **Self-paced tutorial exploration** (25 min)
 
+Slides will be linked above as they become available.
+Recordings will be posted here after the workshop.
+
+### Fornax Links
+
+- [Fornax Quick Start Guide](https://docs.fornax.sciencecloud.nasa.gov/quick-start/)
+- [Fornax Science Console](https://docs.fornax.sciencecloud.nasa.gov/)
+- **Get help** by posting in the Fornax forum's [OpenUniverse Workshop category](https://discourse.fornax.sciencecloud.nasa.gov/c/openuniverse-workshop-2026/29) (private to workshop participants and Fornax staff).
+  - OpenUniverse2024 dataset questions
+  - Data access questions
+  - Tutorial questions
+  - Fornax technical issues
+
 ## Tutorials
 
-Workshop participants will explore the following tutorials, all part of the [IRSA simulated data tutorials](https://caltech-ipac.github.io/irsa-tutorials/simulated/) and runnable at any time in Fornax.
+Workshop participants will explore the following tutorials, all part of the [IRSA's Simulated Data Tutorials](https://caltech-ipac.github.io/irsa-tutorials/simulated/).
+They assume some familiarity with Python and Jupyter notebooks, but not with Roman, Rubin, or cloud data access.
+
+The tutorials are available on the Fornax Science Console in the directory `~/fornax-notebooks/irsa-tutorials/simulated-data/OpenUniverse2024/`.
+They should automatically connect to the `irsa-tutorials` environment kernel, which has all libraries and other dependencies pre-installed.
+
+To run the tutorials outside of Fornax, first clone the [irsa-tutorials repo](https://github.com/Caltech-IPAC/irsa-tutorials/).
+Then, follow the instructions in the first code cell of each notebook to install the dependencies.
 
 ### [Quickstart](https://caltech-ipac.github.io/irsa-tutorials/openuniverse2024-quickstart)
 
@@ -90,13 +106,11 @@ Fit spectral energy distributions for supernova host galaxies using Prospector.
 - Compare host galaxy properties across supernova types
 - Visualize results as SED plots and histograms of fitted stellar masses
 
-## The Dataset and How to Cite It
-
-- **Documentation:** [OpenUniverse2024 overview at IRSA](https://irsa.ipac.caltech.edu/data/theory/openuniverse2024/overview.html)
-- **Data:** [OpenUniverse2024 on the AWS Open Data Registry](https://registry.opendata.aws/openuniverse2024/), in the `us-east-1` buckets `s3://nasa-irsa-simulations/openuniverse2024/roman/` and `s3://nasa-irsa-simulations/openuniverse2024/rubin/`
-
-If you use these tutorials or the OpenUniverse2024 dataset in your work, please follow the ["How to Cite" instructions](https://registry.opendata.aws/openuniverse2024/): cite DOI [10.26131/IRSA569](https://doi.org/10.26131/IRSA569) for the Data Preview or DOI [10.26131/IRSA596](https://doi.org/10.26131/IRSA596) for the Full Release, and follow the OpenUniverse2024 citation guidelines and the IRSA acknowledgement guidelines.
-
 ## Questions
 
-Contact the [IRSA Help Desk](https://irsa.ipac.caltech.edu/docs/help_desk.html).
+**Get help** by posting in the Fornax forum's [OpenUniverse Workshop category](https://discourse.fornax.sciencecloud.nasa.gov/c/openuniverse-workshop-2026/29) (private to workshop participants and Fornax staff).
+
+- OpenUniverse2024 dataset questions
+- Data access questions
+- Tutorial questions
+- Fornax technical issues
