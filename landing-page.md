@@ -28,7 +28,7 @@ All of the material runs in the Fornax Science Console, so participants can foll
 ### Agenda
 
 - **What Is OpenUniverse2024?** (15 min) — [slides (PDF)](workshop-slides/what-is-openuniverse2024.pdf)
-- **Introduction to Fornax** (15 min)
+- **Introduction to Fornax** (15 min) — [slides (PDF)](workshop-slides/intro-to-fornax.pdf)
 - **Accessing OpenUniverse2024 Data** (20 min)
 - **Visualizing OpenUniverse2024 Data** (15 min)
 - **Self-paced tutorial exploration** (25 min)
