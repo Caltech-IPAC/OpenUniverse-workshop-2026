@@ -19,22 +19,57 @@ If you use the OpenUniverse2024 dataset in your work, please follow the "How to 
 
 ## Workshop Resources
 
-The below materials are intended as a free workshop with a hands-on introduction to working with the OpenUniverse2024 dataset.
-Rather than surveying the simulations from a distance, we work through Python Jupyter notebooks that access the data directly in the cloud and carry it through to a scientific result — locating a transient, building a light curve, fitting a spectral energy distribution.
+The below materials were presented in a September 2026 workshop that provided a hands-on introduction to working with the OpenUniverse2024 dataset.
+Rather than surveying the simulations from a distance, we worked through Python Jupyter notebooks that access the data directly in the cloud and carry it through to a scientific result — locating a transient, building a light curve, fitting a spectral energy distribution.
 The emphasis throughout is on combining complementary survey data: what you can measure by using Roman and Rubin together that you cannot get from either one alone, and how to structure that work as a scalable cloud workflow rather than a local download.
-
-All of the material runs in the Fornax Science Console, so participants can follow along and keep experimenting afterward with no local setup.
 
 ### Agenda
 
-- **What Is OpenUniverse2024?** (15 min) — [slides (PDF)](workshop-slides/what-is-openuniverse2024.pdf)
-- **Introduction to Fornax** (15 min) — [slides (PDF)](workshop-slides/intro-to-fornax.pdf)
-- **Accessing OpenUniverse2024 Data** (20 min)
-- **Visualizing OpenUniverse2024 Data** (15 min)
-- **Self-paced tutorial exploration** (25 min)
+The workshop consisted of the following five segments.
+Slides and videos are provided where available.
 
-Slides will be linked above as they become available.
-Recordings will be posted here after the workshop.
+What Is OpenUniverse2024?
+: [Slides (PDF)](workshop-slides/what-is-openuniverse2024.pdf)
+
+  :::{iframe} https://www.youtube.com/embed/_tXjgKOvg38?si=kvN4uiRKOc972pj5
+  :title: What Is OpenUniverse2024?
+  :width: 100%
+
+  Recording of the talk "What Is OpenUniverse2024?" by Jessica Krick.
+  :::
+
+Introduction to Fornax
+: [Slides (PDF)](workshop-slides/intro-to-fornax.pdf)
+
+  :::{iframe} https://www.youtube.com/embed/9wYURI5E-Yg?si=8ig9zeV6X2aI_bXl
+  :title: Introduction to Fornax
+  :width: 800
+
+  Recording of the talk "Introduction to Fornax" by Troy Raen.
+  :::
+
+Accessing OpenUniverse2024 Data
+: Notebook walk-through (no slides).
+
+  :::{iframe} https://www.youtube.com/embed/_joumkd_Pro?si=aULxc9DvADfvZslg
+  :title: Accessing OpenUniverse2024 Data
+  :width: 800
+
+  Recording of the "Quickstart" notebook walk-through by Jessica Krick.
+  :::
+
+Visualizing OpenUniverse2024 Data
+: Notebook walk-through (no slides).
+
+  :::{iframe} https://www.youtube.com/embed/AJXacz6WuU4?si=SMWS7TL1ZrwI1vbP
+  :title: Visualizing OpenUniverse2024 Data
+  :width: 800
+
+  Recording of the "Firefly Visualization" notebook walk-through by Jaladh Singhal.
+  :::
+
+Self-paced tutorial exploration
+: Participants worked through notebook tutorials at their own pace (no slides or video).
 
 ### Fornax Links
 
@@ -116,7 +151,7 @@ Fit spectral energy distributions for supernova host galaxies using Prospector.
 
 ## Questions
 
-**Get help** by posting in the Fornax forum's [OpenUniverse Workshop category](https://discourse.fornax.sciencecloud.nasa.gov/c/openuniverse-workshop-2026/29) (private to workshop participants and Fornax staff).
+**Get help** by posting in the Fornax [Helpdesk](https://discourse.fornax.sciencecloud.nasa.gov/c/helpdesk/) (public) or the [OpenUniverse Workshop category](https://discourse.fornax.sciencecloud.nasa.gov/c/openuniverse-workshop-2026/29) (private to workshop participants and Fornax staff).
 
 - OpenUniverse2024 dataset questions
 - Data access questions
